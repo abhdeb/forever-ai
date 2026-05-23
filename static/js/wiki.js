@@ -108,13 +108,19 @@ chatForm.addEventListener("submit", async e => {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
-    const data = await res.json();
     removeTypingIndicator();
-    if (data.error) { addMessage("assistant", `⚠️ Error: ${data.error}`); setStatus("Error", "#e05555"); }
-    else            { addMessage("assistant", data.reply); setStatus(""); }
-  } catch {
+    if (!res.ok) {
+      const text = await res.text();
+      addMessage("assistant", `⚠️ Server error ${res.status}: ${text.slice(0, 200)}`);
+      setStatus("Error", "#e05555");
+    } else {
+      const data = await res.json();
+      if (data.error) { addMessage("assistant", `⚠️ Error: ${data.error}`); setStatus("Error", "#e05555"); }
+      else            { addMessage("assistant", data.reply); setStatus(""); }
+    }
+  } catch (err) {
     removeTypingIndicator();
-    addMessage("assistant", "⚠️ Could not reach the server. Is web_app.py running?");
+    addMessage("assistant", `⚠️ Could not reach the server: ${err.message || err}`);
     setStatus("Offline", "#e05555");
   } finally {
     sendBtn.disabled = false;

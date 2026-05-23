@@ -41,11 +41,29 @@ def _get_pool() -> ThreadedConnectionPool:
 def _conn():
     pool = _get_pool()
     conn = pool.getconn()
+    # Recycle connections that were closed server-side (Supabase idle timeout)
+    if conn.closed:
+        pool.putconn(conn, close=True)
+        conn = pool.getconn()
+    try:
+        # Validate with a cheap ping; replace if stale
+        conn.isolation_level  # accessing this triggers no I/O but checks state
+        with conn.cursor() as _cur:
+            _cur.execute("SELECT 1")
+    except Exception:
+        try:
+            pool.putconn(conn, close=True)
+        except Exception:
+            pass
+        conn = pool.getconn()
     try:
         yield conn
         conn.commit()
     except Exception:
-        conn.rollback()
+        try:
+            conn.rollback()
+        except Exception:
+            pass
         raise
     finally:
         pool.putconn(conn)
