@@ -64,14 +64,33 @@ def load_always_include_cloud(user_id: str) -> str:
 
 
 def build_context_cloud(query: str, user_id: str) -> str:
+    import cloud_db as db
     parts: List[str] = []
+
+    # Always-include context notes (_context/ folder)
     always_text = load_always_include_cloud(user_id)
     if always_text:
         parts.append("=== YOUR PERSISTENT CONTEXT (always loaded) ===\n" + always_text)
+
+    # Note directory — always inject so AI knows what notes exist
+    all_notes = db.list_notes(user_id)
+    if all_notes:
+        lines = []
+        by_folder: dict = {}
+        for n in all_notes:
+            by_folder.setdefault(n["folder"], []).append(n["title"])
+        for folder, titles in sorted(by_folder.items()):
+            lines.append(f"[{folder}]")
+            for t in titles:
+                lines.append(f"  - {t}")
+        parts.append("=== YOUR NOTE DIRECTORY ===\n" + "\n".join(lines))
+
+    # Semantically relevant chunks
     chunks = retrieve_cloud(query, user_id)
     if chunks:
         retrieved = "\n\n---\n\n".join(c.to_context_block() for c in chunks)
         parts.append("=== RELEVANT NOTES FROM YOUR VAULT ===\n" + retrieved)
+
     return "\n\n" + ("\n\n" + "=" * 60 + "\n\n").join(parts) if parts else ""
 
 
