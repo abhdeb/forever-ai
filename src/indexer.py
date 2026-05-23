@@ -78,7 +78,7 @@ def index_note(note: dict, user_id: str):
         return
 
     content_hash = hashlib.md5(content.encode()).hexdigest()[:8]
-    embeddings   = _get_model().encode(texts)
+    embeddings   = list(_get_model().embed(texts))
 
     chunks = []
     for i, (text, emb) in enumerate(zip(texts, embeddings)):
