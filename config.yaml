@@ -28,7 +28,7 @@ retrieval:
   # How many vault chunks to retrieve per query
   top_k: 6
   # Minimum similarity score (0–1) — chunks below this are dropped
-  min_score: 0.30
+  min_score: 0.10
   # Characters per chunk when splitting large notes
   chunk_size: 800
   chunk_overlap: 100
