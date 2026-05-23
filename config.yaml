@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────
+#  Forever AI — Configuration
+# ─────────────────────────────────────────────────────
+
+vault:
+  # Root directory of your Obsidian-compatible Markdown notes.
+  # All .md files here (recursively) are indexed into ChromaDB.
+  path: "./vault"
+  # Directories inside vault/ to always include in every query context
+  # (injected verbatim before retrieval results).
+  always_include:
+    - "_context"
+
+chroma:
+  # Reuse the existing ChromaDB from the Development root.
+  persist_directory: "../chroma"
+  # Separate collection name so it doesn't collide with other data.
+  collection_name: "forever_ai"
+
+embeddings:
+  # "local"  → sentence-transformers (no API key, runs on-device, private)
+  # "openai" → text-embedding-3-small (faster, needs OPENAI_API_KEY)
+  provider: "local"
+  local_model: "all-MiniLM-L6-v2"
+  openai_model: "text-embedding-3-small"
+
+retrieval:
+  # How many vault chunks to retrieve per query
+  top_k: 6
+  # Minimum similarity score (0–1) — chunks below this are dropped
+  min_score: 0.30
+  # Characters per chunk when splitting large notes
+  chunk_size: 800
+  chunk_overlap: 100
+
+llm:
+  # Provider: "groq" | "ollama" | "claude" | "openai"
+  # For cloud deployment (Render.com) → use "groq" (free, fast)
+  # For local deployment             → use "ollama" (no API key needed)
+  provider: "groq"
+  groq_model: "llama-3.3-70b-versatile"   # free, fast at console.groq.com
+  claude_model: "claude-opus-4-5"
+  openai_model: "gpt-4o"
+  # Ollama endpoint — used when provider=ollama
+  ollama_base_url: "http://localhost:11434"
+  ollama_model: "llama3"
+  temperature: 0.4
+  max_tokens: 2048
+
+web:
+  host: "127.0.0.1"
+  port: 5050
+  debug: false

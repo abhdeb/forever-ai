@@ -1,0 +1,39 @@
+# ── Authentication ────────────────────────────────────────────────────────
+bcrypt>=4.0.0
+
+# ── Cloud database (Supabase / PostgreSQL + pgvector) ─────────────────────
+psycopg2-binary>=2.9.0
+
+# ── LLM providers ─────────────────────────────────────────────────────────
+groq>=0.9.0           # Free, fast — recommended for cloud
+anthropic>=0.30.0     # Optional: Claude
+openai>=1.40.0        # Optional: GPT-4 / OpenAI-compatible
+
+# ── Local vector store (used in local mode, not cloud) ────────────────────
+chromadb>=0.5.0
+
+# ── Local embeddings — no API key needed, runs on-device ──────────────────
+sentence-transformers>=3.0.0
+
+# ── Markdown parsing ──────────────────────────────────────────────────────
+python-frontmatter>=1.0.0,<1.2.0
+markdown>=3.6
+
+# ── Config & env ──────────────────────────────────────────────────────────
+PyYAML>=6.0
+python-dotenv>=1.0.0
+
+# ── CLI interface ─────────────────────────────────────────────────────────
+rich>=13.7.0
+prompt_toolkit>=3.0.0
+
+# ── File-system watcher (live re-index for local vault) ───────────────────
+watchdog>=4.0.0
+
+# ── Web interface ─────────────────────────────────────────────────────────
+flask>=2.3.0
+flask-cors>=4.0.0
+gunicorn>=21.0.0      # Production WSGI server (Render.com)
+
+# ── Utilities ─────────────────────────────────────────────────────────────
+tiktoken>=0.7.0

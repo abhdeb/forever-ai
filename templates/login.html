@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forever AI — Sign In</title>
+  <link rel="stylesheet" href="/static/css/wiki.css"/>
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <div class="login-logo">🧠</div>
+    <h1 class="login-title">Forever AI</h1>
+    <p class="login-tagline">Your AI Second Brain — remembers everything, forgets nothing.</p>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs">
+      <button class="auth-tab {% if tab == 'login' or not tab %}active{% endif %}"
+              onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab {% if tab == 'register' %}active{% endif %}"
+              onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    {% if error %}
+      <div class="auth-error">{{ error }}</div>
+    {% endif %}
+
+    <!-- Sign In -->
+    <form id="form-login" class="auth-form {% if tab == 'register' %}hidden{% endif %}"
+          method="POST" action="/login">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" name="email" required autocomplete="email"
+               value="{{ email or '' }}" placeholder="you@example.com"/>
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" name="password" required
+               autocomplete="current-password" placeholder="••••••••"/>
+      </div>
+      <button type="submit" class="auth-submit-btn">Sign In</button>
+    </form>
+
+    <!-- Create Account -->
+    <form id="form-register" class="auth-form {% if tab != 'register' %}hidden{% endif %}"
+          method="POST" action="/register">
+      <div class="field">
+        <label for="reg-name">Your Name</label>
+        <input id="reg-name" type="text" name="name" required autocomplete="name"
+               value="{{ name or '' }}" placeholder="Ada Lovelace"/>
+      </div>
+      <div class="field">
+        <label for="reg-email">Email</label>
+        <input id="reg-email" type="email" name="email" required autocomplete="email"
+               value="{{ email or '' }}" placeholder="you@example.com"/>
+      </div>
+      <div class="field">
+        <label for="reg-password">Password <span class="hint">(min 8 characters)</span></label>
+        <input id="reg-password" type="password" name="password" required
+               autocomplete="new-password" placeholder="••••••••" minlength="8"/>
+      </div>
+      <div class="field">
+        <label for="reg-confirm">Confirm Password</label>
+        <input id="reg-confirm" type="password" name="confirm" required
+               autocomplete="new-password" placeholder="••••••••"/>
+      </div>
+      <button type="submit" class="auth-submit-btn">Create Account</button>
+    </form>
+
+    <p class="login-footer">Your data is private and stored securely.</p>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.add('hidden'));
+      document.querySelector('#form-' + tab).classList.remove('hidden');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

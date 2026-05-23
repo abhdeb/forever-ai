@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forever AI — Your AI Second Brain</title>
+  <link rel="stylesheet" href="/static/css/wiki.css" />
+</head>
+<body>
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo">🧠</span>
+        <span class="logo-text">Forever AI</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-panel="chat">💬 Chat</button>
+        <button class="nav-btn" data-panel="notes">📝 Notes</button>
+        <button class="nav-btn" data-panel="search">🔍 Search</button>
+      </nav>
+
+      <div class="user-row">
+        <div class="user-avatar user-avatar-fallback">{{ (user.user_name or user.user_email or 'U')[0]|upper }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ user.user_name or user.user_email }}</span>
+          <a href="/auth/logout" class="logout-link">Sign out</a>
+        </div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button id="btn-reset" class="action-btn secondary">↺ New Chat</button>
+        <button id="btn-reindex" class="action-btn secondary">⟳ Re-index</button>
+      </div>
+
+      <div id="status-bar" class="status-bar"></div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <!-- Chat panel -->
+      <section id="panel-chat" class="panel active">
+        <div id="messages" class="messages">
+          <div class="message assistant">
+            <div class="bubble">
+              Hi! I'm your AI thinking partner. I have access to your entire vault and will
+              reference your notes to give you contextual, personalised answers.
+              <br/><br/>Try: <em>"What are my current active projects?"</em> or
+              <em>"Summarise my thoughts on [topic]."</em>
+            </div>
+          </div>
+        </div>
+        <form id="chat-form" class="chat-form" autocomplete="off">
+          <textarea id="chat-input" class="chat-input"
+                    placeholder="Ask anything about your notes, projects, or ideas…"
+                    rows="1"></textarea>
+          <button type="submit" class="send-btn" aria-label="Send">&#9658;</button>
+        </form>
+      </section>
+
+      <!-- Notes panel -->
+      <section id="panel-notes" class="panel notes-panel">
+        <div class="notes-sidebar">
+          <div class="notes-toolbar">
+            <button id="btn-new-note" class="action-btn primary">+ New Note</button>
+            <select id="folder-filter" class="folder-select">
+              <option value="">All folders</option>
+            </select>
+          </div>
+          <ul id="notes-list" class="notes-list"></ul>
+        </div>
+        <div class="notes-editor">
+          <div id="note-placeholder" class="note-placeholder">
+            <p>Select a note to edit, or create a new one.</p>
+          </div>
+          <div id="note-form" class="note-form hidden">
+            <div class="note-meta-row">
+              <input id="note-title" type="text" class="note-title-input" placeholder="Note title"/>
+              <input id="note-folder" type="text" class="note-folder-input" placeholder="folder"/>
+              <input id="note-tags" type="text" class="note-tags-input" placeholder="tags (comma separated)"/>
+            </div>
+            <textarea id="note-content" class="note-content-area"
+                      placeholder="Write in Markdown…"></textarea>
+            <div class="note-actions-row">
+              <button id="btn-save-note" class="action-btn primary">💾 Save</button>
+              <button id="btn-delete-note" class="action-btn danger">🗑 Delete</button>
+              <span id="note-save-status" class="save-status"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search panel -->
+      <section id="panel-search" class="panel">
+        <div class="search-bar">
+          <input id="search-input" type="text" class="search-field"
+                 placeholder="Search your vault…"/>
+          <button id="search-btn" class="send-btn">Search</button>
+        </div>
+        <div id="search-results" class="search-results"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/static/js/wiki.js"></script>
+</body>
+</html>
