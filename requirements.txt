@@ -1,5 +1,7 @@
 # ── Authentication ────────────────────────────────────────────────────────
 bcrypt>=4.0.0
+authlib>=1.3.0
+requests>=2.31.0
 
 # ── Cloud database (Supabase / PostgreSQL + pgvector) ─────────────────────
 psycopg2-binary>=2.9.0

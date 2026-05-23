@@ -13,5 +13,9 @@ services:
         sync: false           # set in Render dashboard
       - key: GROQ_API_KEY
         sync: false           # set in Render dashboard
+      - key: GOOGLE_CLIENT_ID
+        sync: false           # optional — enables Google OAuth login
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false           # optional — enables Google OAuth login
       - key: PYTHON_VERSION
         value: "3.9.18"

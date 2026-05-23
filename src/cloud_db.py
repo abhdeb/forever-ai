@@ -133,9 +133,10 @@ def init_db():
 
 # ── Users ─────────────────────────────────────────────────────────────────
 
-def register_user(email: str, name: str, password: str) -> Optional[Dict]:
-    """Hash password and insert user. Returns None if email already taken."""
-    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+def register_user(email: str, name: str, password: Optional[str]) -> Optional[Dict]:
+    """Hash password and insert user. Returns None if email already taken.
+    Pass password=None for OAuth users (no password set)."""
+    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()) if password else None
     try:
         with _conn() as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
@@ -173,6 +174,16 @@ def get_user(user_id: str) -> Optional[Dict]:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 "SELECT id, email, name FROM users WHERE id = %s", (user_id,)
+            )
+            row = cur.fetchone()
+    return dict(row) if row else None
+
+
+def get_user_by_email(email: str) -> Optional[Dict]:
+    with _conn() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                "SELECT id, email, name FROM users WHERE email = %s", (email,)
             )
             row = cur.fetchone()
     return dict(row) if row else None
