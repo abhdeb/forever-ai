@@ -21,7 +21,7 @@ embeddings:
   # "local"  → sentence-transformers (no API key, runs on-device, private)
   # "openai" → text-embedding-3-small (faster, needs OPENAI_API_KEY)
   provider: "local"
-  local_model: "all-MiniLM-L6-v2"
+  local_model: "sentence-transformers/all-MiniLM-L6-v2"
   openai_model: "text-embedding-3-small"
 
 retrieval:

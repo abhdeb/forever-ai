@@ -12,8 +12,8 @@ openai>=1.40.0        # Optional: GPT-4 / OpenAI-compatible
 # ── Local vector store (used in local mode, not cloud) ────────────────────
 chromadb>=0.5.0
 
-# ── Local embeddings — no API key needed, runs on-device ──────────────────
-sentence-transformers>=3.0.0
+# ── Local embeddings — ONNX-based, low memory (~150MB vs 400MB for torch) ──
+fastembed>=0.3.6
 
 # ── Markdown parsing ──────────────────────────────────────────────────────
 python-frontmatter>=1.0.0,<1.2.0

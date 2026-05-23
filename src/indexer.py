@@ -15,7 +15,7 @@ from typing import List, Optional
 
 from _config import cfg
 
-# ── Shared: sentence-transformers embedder ────────────────────────────────
+# ── Shared: fastembed embedder (ONNX, no PyTorch, ~150MB RAM) ───────────────
 
 _st_model = None
 
@@ -23,13 +23,15 @@ _st_model = None
 def _get_model():
     global _st_model
     if _st_model is None:
-        from sentence_transformers import SentenceTransformer
-        _st_model = SentenceTransformer(cfg["embeddings"]["local_model"])
+        from fastembed import TextEmbedding
+        _st_model = TextEmbedding(model_name=cfg["embeddings"]["local_model"])
     return _st_model
 
 
 def embed_text(text: str) -> List[float]:
-    return _get_model().encode(text).tolist()
+    model = _get_model()
+    result = list(model.embed([text]))
+    return result[0].tolist()
 
 
 # ── Shared: text splitter ─────────────────────────────────────────────────
